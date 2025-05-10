@@ -11,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class ArticleDTO {
-    private Integer id;
     private String nanoid;
     private String slug;
     private String title;
@@ -20,8 +19,6 @@ public class ArticleDTO {
     private String coverImage;
     private String readingTime;
     private Date publishedDate;
-    private Date createdAt;
-    private Date updatedAt;
     
     // 关联的分类和标签
     private List<CategoryDTO> categories;

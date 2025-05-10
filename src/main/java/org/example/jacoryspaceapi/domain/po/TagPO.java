@@ -13,5 +13,7 @@ public class TagPO {
     private Integer id;
     private String nanoid;
     private String name;
-    private Date createdAt;
+    private Integer isDeleted;
+    private Date createTime;
+    private Date updateTime;
 }

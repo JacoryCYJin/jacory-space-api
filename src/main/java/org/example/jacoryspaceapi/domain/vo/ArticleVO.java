@@ -19,8 +19,6 @@ public class ArticleVO {
     private String coverImage;
     private String readingTime;
     private Date publishedDate;
-    private Date createdAt;
-    private Date updatedAt;
     
     // 关联的分类和标签
     private List<CategoryVO> categories;

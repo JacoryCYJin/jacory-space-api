@@ -19,6 +19,7 @@ public class ArticlePO {
     private String coverImage;
     private String readingTime;
     private Date publishedDate;
-    private Date createdAt;
-    private Date updatedAt;
+    private Integer isDeleted;
+    private Date createTime;
+    private Date updateTime;
 }

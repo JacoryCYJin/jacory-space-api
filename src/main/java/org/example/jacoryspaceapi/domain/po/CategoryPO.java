@@ -14,5 +14,7 @@ public class CategoryPO {
     private String nanoid;
     private String name;
     private String description;
-    private Date createdAt;
+    private Integer isDeleted;
+    private Date createTime;
+    private Date updateTime;
 }

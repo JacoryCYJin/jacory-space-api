@@ -11,77 +11,51 @@ import java.util.stream.Collectors;
 /**
  * 标签对象转换器
  */
+
 public class TagConverter {
 
     /**
      * TagPO 转 TagDTO
      */
-    public static TagDTO toTagDTO(TagPO po) {
+    public static TagDTO converterTagPOtoTagDTO(TagPO po) {
         if (po == null) {
             return null;
         }
-        
-        TagDTO dto = new TagDTO();
-        dto.setId(po.getId());
-        dto.setNanoid(po.getNanoid());
-        dto.setName(po.getName());
-        dto.setCreatedAt(po.getCreatedAt());
-        
-        return dto;
+
+        return new TagDTO(po.getNanoid(), po.getName());
     }
-    
+
     /**
-     * TagPO 列表转 TagDTO 列表
+     * TagPO List 转 TagDTO List
      */
-    public static List<TagDTO> toTagDTOList(List<TagPO> poList) {
+    public static List<TagDTO> converterTagPOListToTagDTOList(List<TagPO> poList) {
         if (poList == null) {
             return new ArrayList<>();
         }
-        
-        return poList.stream()
-                .map(TagConverter::toTagDTO)
-                .collect(Collectors.toList());
+
+        return poList.stream().map(TagConverter::converterTagPOtoTagDTO).collect(Collectors.toList());
     }
-    
+
     /**
      * TagDTO 转 TagVO
      */
-    public static TagVO toTagVO(TagDTO dto) {
+    public static TagVO converterTagDTOtoTagVO(TagDTO dto) {
         if (dto == null) {
             return null;
         }
-        
-        TagVO vo = new TagVO();
-        vo.setNanoid(dto.getNanoid());
-        vo.setName(dto.getName());
-        
-        return vo;
+
+        return new TagVO(dto.getNanoid(), dto.getName());
     }
-    
+
     /**
-     * TagDTO 列表转 TagVO 列表
+     * TagDTO List 转 TagVO List
      */
-    public static List<TagVO> toTagVOList(List<TagDTO> dtoList) {
+    public static List<TagVO> converterTagDTOListToTagVOList(List<TagDTO> dtoList) {
         if (dtoList == null) {
             return new ArrayList<>();
         }
-        
-        return dtoList.stream()
-                .map(TagConverter::toTagVO)
-                .collect(Collectors.toList());
+
+        return dtoList.stream().map(TagConverter::converterTagDTOtoTagVO).collect(Collectors.toList());
     }
-    
-    /**
-     * TagPO 转 TagVO
-     */
-    public static TagVO toTagVO(TagPO po) {
-        return toTagVO(toTagDTO(po));
-    }
-    
-    /**
-     * TagPO 列表转 TagVO 列表
-     */
-    public static List<TagVO> toTagVOList(List<TagPO> poList) {
-        return toTagVOList(toTagDTOList(poList));
-    }
+
 }

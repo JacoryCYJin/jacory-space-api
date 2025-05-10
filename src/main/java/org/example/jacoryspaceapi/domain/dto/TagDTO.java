@@ -10,8 +10,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 public class TagDTO {
-    private Integer id;
     private String nanoid;
     private String name;
-    private Date createdAt;
 }

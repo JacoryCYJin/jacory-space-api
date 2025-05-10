@@ -10,9 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 public class CategoryDTO {
-    private Integer id;
     private String nanoid;
     private String name;
     private String description;
-    private Date createdAt;
 }

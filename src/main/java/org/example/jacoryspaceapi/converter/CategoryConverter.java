@@ -8,82 +8,50 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * 分类对象转换器
- */
 public class CategoryConverter {
 
     /**
      * CategoryPO 转 CategoryDTO
      */
-    public static CategoryDTO toCategoryDTO(CategoryPO po) {
+    public static CategoryDTO converterCategoryPOtoCategoryDTO(CategoryPO po) {
         if (po == null) {
             return null;
         }
-        
-        CategoryDTO dto = new CategoryDTO();
-        dto.setId(po.getId());
-        dto.setNanoid(po.getNanoid());
-        dto.setName(po.getName());
-        dto.setDescription(po.getDescription());
-        dto.setCreatedAt(po.getCreatedAt());
-        
-        return dto;
+
+        return new CategoryDTO(po.getNanoid(), po.getName(), po.getDescription());
     }
-    
+
     /**
-     * CategoryPO 列表转 CategoryDTO 列表
+     * CategoryPOList 转 CategoryVOList
      */
-    public static List<CategoryDTO> toCategoryDTOList(List<CategoryPO> poList) {
+    public static List<CategoryDTO> converterCategoryPOListToCategoryDTOList(List<CategoryPO> poList) {
         if (poList == null) {
             return new ArrayList<>();
         }
-        
-        return poList.stream()
-                .map(CategoryConverter::toCategoryDTO)
-                .collect(Collectors.toList());
+
+        return poList.stream().map(CategoryConverter::converterCategoryPOtoCategoryDTO).collect(Collectors.toList());
     }
-    
+
     /**
      * CategoryDTO 转 CategoryVO
      */
-    public static CategoryVO toCategoryVO(CategoryDTO dto) {
+    public static CategoryVO converterCategoryDTOtoCategoryVO(CategoryDTO dto) {
         if (dto == null) {
             return null;
         }
-        
-        CategoryVO vo = new CategoryVO();
-        vo.setNanoid(dto.getNanoid());
-        vo.setName(dto.getName());
-        vo.setDescription(dto.getDescription());
-        
-        return vo;
+
+        return new CategoryVO(dto.getNanoid(), dto.getName(), dto.getDescription());
     }
-    
+
     /**
-     * CategoryDTO 列表转 CategoryVO 列表
+     * CategoryDTOList 转 CategoryVOList
      */
-    public static List<CategoryVO> toCategoryVOList(List<CategoryDTO> dtoList) {
+    public static List<CategoryVO> converterCategoryDTOListToCategoryVOList(List<CategoryDTO> dtoList) {
         if (dtoList == null) {
             return new ArrayList<>();
         }
-        
-        return dtoList.stream()
-                .map(CategoryConverter::toCategoryVO)
-                .collect(Collectors.toList());
+
+        return dtoList.stream().map(CategoryConverter::converterCategoryDTOtoCategoryVO).collect(Collectors.toList());
     }
-    
-    /**
-     * CategoryPO 转 CategoryVO
-     */
-    public static CategoryVO toCategoryVO(CategoryPO po) {
-        return toCategoryVO(toCategoryDTO(po));
-    }
-    
-    /**
-     * CategoryPO 列表转 CategoryVO 列表
-     */
-    public static List<CategoryVO> toCategoryVOList(List<CategoryPO> poList) {
-        return toCategoryVOList(toCategoryDTOList(poList));
-    }
+
 }
