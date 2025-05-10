@@ -14,4 +14,11 @@ public interface CategoryService {
      * @return
      */
     List<CategoryDTO> list();
+    
+    /**
+     * 根据nanoid列表查询分类
+     * @param nanoids 分类nanoid列表
+     * @return 分类列表
+     */
+    List<CategoryDTO> listByNanoids(List<String> nanoids);
 }

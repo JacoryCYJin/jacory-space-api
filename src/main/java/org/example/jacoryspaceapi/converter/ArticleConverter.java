@@ -5,6 +5,9 @@ import org.example.jacoryspaceapi.domain.dto.CategoryDTO;
 import org.example.jacoryspaceapi.domain.dto.TagDTO;
 import org.example.jacoryspaceapi.domain.po.ArticlePO;
 import org.example.jacoryspaceapi.domain.vo.ArticleVO;
+import org.example.jacoryspaceapi.domain.vo.CategoryVO;
+import org.example.jacoryspaceapi.domain.vo.TagVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,8 +17,6 @@ import java.util.stream.Collectors;
 
 /**
  * 文章对象转换器
- * @author Jacory
- * @date 2025/5/10
  */
 @Component
 public class ArticleConverter {
@@ -37,14 +38,12 @@ public class ArticleConverter {
         dto.setCoverImage(po.getCoverImage());
         dto.setReadingTime(po.getReadingTime());
         dto.setPublishedDate(po.getPublishedDate());
-        dto.setCreateTime(po.getCreateTime());
-        dto.setUpdateTime(po.getUpdateTime());
         dto.setCategories(new ArrayList<>());
         dto.setTags(new ArrayList<>());
         
         return dto;
     }
-    
+
     /**
      * ArticlePOList 转 ArticleDTOList
      */
@@ -52,12 +51,12 @@ public class ArticleConverter {
         if (poList == null) {
             return new ArrayList<>();
         }
-        
+
         return poList.stream()
                 .map(this::converterArticlePOtoArticleDTO)
                 .collect(Collectors.toList());
     }
-    
+
     /**
      * ArticleDTO 转 ArticleVO
      */
@@ -65,7 +64,7 @@ public class ArticleConverter {
         if (dto == null) {
             return null;
         }
-        
+
         ArticleVO vo = new ArticleVO();
         vo.setNanoid(dto.getNanoid());
         vo.setSlug(dto.getSlug());
@@ -75,12 +74,30 @@ public class ArticleConverter {
         vo.setCoverImage(dto.getCoverImage());
         vo.setReadingTime(dto.getReadingTime());
         vo.setPublishedDate(dto.getPublishedDate());
-        vo.setCategories(dto.getCategories());
-        vo.setTags(dto.getTags());
+        
+        // 转换分类列表
+        if (dto.getCategories() != null) {
+            List<CategoryVO> categoryVOList = dto.getCategories().stream()
+                    .map(CategoryConverter::converterCategoryDTOtoCategoryVO)
+                    .collect(Collectors.toList());
+            vo.setCategories(categoryVOList);
+        } else {
+            vo.setCategories(new ArrayList<>());
+        }
+        
+        // 转换标签列表
+        if (dto.getTags() != null) {
+            List<TagVO> tagVOList = dto.getTags().stream()
+                    .map(TagConverter::converterTagDTOtoTagVO)
+                    .collect(Collectors.toList());
+            vo.setTags(tagVOList);
+        } else {
+            vo.setTags(new ArrayList<>());
+        }
         
         return vo;
     }
-    
+
     /**
      * ArticleDTOList 转 ArticleVOList
      */
@@ -88,7 +105,7 @@ public class ArticleConverter {
         if (dtoList == null) {
             return new ArrayList<>();
         }
-        
+
         return dtoList.stream()
                 .map(this::converterArticleDTOtoArticleVO)
                 .collect(Collectors.toList());

@@ -17,9 +17,19 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
+    
     @Override
     public List<CategoryDTO> list() {
         List<CategoryDTO> categoryDTOList = CategoryConverter.converterCategoryPOListToCategoryDTOList(categoryMapper.list());
+        return categoryDTOList;
+    }
+    
+    @Override
+    public List<CategoryDTO> listByNanoids(List<String> nanoids) {
+        if (nanoids == null || nanoids.isEmpty()) {
+            return List.of();
+        }
+        List<CategoryDTO> categoryDTOList = CategoryConverter.converterCategoryPOListToCategoryDTOList(categoryMapper.listByNanoids(nanoids));
         return categoryDTOList;
     }
 }

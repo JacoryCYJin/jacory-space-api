@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.jacoryspaceapi.mapper.ArticleMapper">
+    
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="org.example.jacoryspaceapi.domain.po.ArticlePO">
+        <id column="id" property="id"/>
+        <result column="nanoid" property="nanoid"/>
+        <result column="slug" property="slug"/>
+        <result column="title" property="title"/>
+        <result column="excerpt" property="excerpt"/>
+        <result column="content" property="content"/>
+        <result column="cover_image" property="coverImage"/>
+        <result column="reading_time" property="readingTime"/>
+        <result column="published_date" property="publishedDate"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+    
+    <!-- 基础列 -->
+    <sql id="Base_Column_List">
+        id, nanoid, slug, title, excerpt, content, cover_image, reading_time, published_date, is_deleted, create_time, update_time
+    </sql>
+    
+    <!-- 查询所有文章 -->
+    <select id="list" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM article
+        WHERE is_deleted = 0
+        ORDER BY published_date DESC
+    </select>
+    
+    <!-- 根据nanoid查询文章 -->
+    <select id="getByNanoid" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM article
+        WHERE nanoid = #{nanoid} AND is_deleted = 0
+    </select>
+    
+    <!-- 根据slug查询文章 -->
+    <select id="getBySlug" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM article
+        WHERE slug = #{slug} AND is_deleted = 0
+    </select>
+    
+    <!-- 插入文章 -->
+    <insert id="insert" parameterType="org.example.jacoryspaceapi.domain.po.ArticlePO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO article (
+            nanoid, slug, title, excerpt, content, cover_image, reading_time, published_date, is_deleted
+        ) VALUES (
+            #{nanoid}, #{slug}, #{title}, #{excerpt}, #{content}, #{coverImage}, #{readingTime}, #{publishedDate}, #{isDeleted}
+        )
+    </insert>
+    
+    <!-- 更新文章 -->
+    <update id="update" parameterType="org.example.jacoryspaceapi.domain.po.ArticlePO">
+        UPDATE article
+        <set>
+            <if test="slug != null">slug = #{slug},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="excerpt != null">excerpt = #{excerpt},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="coverImage != null">cover_image = #{coverImage},</if>
+            <if test="readingTime != null">reading_time = #{readingTime},</if>
+            <if test="publishedDate != null">published_date = #{publishedDate},</if>
+        </set>
+        WHERE nanoid = #{nanoid} AND is_deleted = 0
+    </update>
+    
+    <!-- 删除文章（逻辑删除） -->
+    <update id="delete">
+        UPDATE article
+        SET is_deleted = 1
+        WHERE nanoid = #{nanoid} AND is_deleted = 0
+    </update>
+    
+    <!-- 查询文章列表 -->
+    <select id="queryArticles" resultMap="BaseResultMap">
+        SELECT DISTINCT a.*
+        FROM article a
+        <if test="categoryNanoid != null and categoryNanoid != ''">
+            LEFT JOIN article_category ac ON a.nanoid = ac.article_nanoid
+        </if>
+        <if test="tagNanoid != null and tagNanoid != ''">
+            LEFT JOIN article_tag at ON a.nanoid = at.article_nanoid
+        </if>
+        <where>
+            <if test="title != null and title != ''">
+                a.title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="content != null and content != ''">
+                AND a.content LIKE CONCAT('%', #{content}, '%')
+            </if>
+            <if test="categoryNanoid != null and categoryNanoid != ''">
+                AND ac.category_nanoid = #{categoryNanoid}
+            </if>
+            <if test="tagNanoid != null and tagNanoid != ''">
+                AND at.tag_nanoid = #{tagNanoid}
+            </if>
+            <if test="startDate != null">
+                AND a.published_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND a.published_date &lt;= #{endDate}
+            </if>
+            AND a.is_deleted = 0
+        </where>
+        ORDER BY a.published_date DESC
+    </select>
+    
+</mapper>

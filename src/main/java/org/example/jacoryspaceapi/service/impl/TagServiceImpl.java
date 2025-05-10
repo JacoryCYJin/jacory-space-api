@@ -25,4 +25,13 @@ public class TagServiceImpl implements TagService {
         List<TagDTO> tagDTOList = TagConverter.converterTagPOListToTagDTOList(tagMapper.list());
         return tagDTOList;
     }
+    
+    @Override
+    public List<TagDTO> listByNanoids(List<String> nanoids) {
+        if (nanoids == null || nanoids.isEmpty()) {
+            return List.of();
+        }
+        List<TagDTO> tagDTOList = TagConverter.converterTagPOListToTagDTOList(tagMapper.listByNanoids(nanoids));
+        return tagDTOList;
+    }
 }

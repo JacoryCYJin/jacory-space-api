@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.jacoryspaceapi.mapper.ArticleCategoryMapper">
+    
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="org.example.jacoryspaceapi.domain.po.ArticleCategoryPO">
+        <result column="article_nanoid" property="articleNanoid"/>
+        <result column="category_nanoid" property="categoryNanoid"/>
+    </resultMap>
+    
+    <!-- 根据文章nanoid查询分类nanoid列表 -->
+    <select id="listCategoryNanoidsByArticleNanoid" resultType="java.lang.String">
+        SELECT category_nanoid
+        FROM article_category
+        WHERE article_nanoid = #{articleNanoid}
+    </select>
+    
+    <!-- 根据文章nanoid列表查询文章-分类关联 -->
+    <select id="listByArticleNanoids" resultMap="BaseResultMap">
+        SELECT article_nanoid, category_nanoid
+        FROM article_category
+        WHERE article_nanoid IN
+        <foreach collection="articleNanoids" item="articleNanoid" open="(" separator="," close=")">
+            #{articleNanoid}
+        </foreach>
+    </select>
+    
+    <!-- 批量插入文章-分类关联 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO article_category (article_nanoid, category_nanoid)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.articleNanoid}, #{item.categoryNanoid})
+        </foreach>
+    </insert>
+    
+    <!-- 根据文章nanoid删除文章-分类关联 -->
+    <delete id="deleteByArticleNanoid">
+        DELETE FROM article_category
+        WHERE article_nanoid = #{articleNanoid}
+    </delete>
+    
+</mapper>
