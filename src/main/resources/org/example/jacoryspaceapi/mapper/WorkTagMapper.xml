@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.jacoryspaceapi.mapper.WorkTagMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="org.example.jacoryspaceapi.domain.po.WorkTagPO">
+        <result column="work_nanoid" property="workNanoid"/>
+        <result column="tag_nanoid" property="tagNanoid"/>
+    </resultMap>
+
+    <select id="listByWorkNanoids" resultMap="BaseResultMap">
+        SELECT work_nanoid, tag_nanoid
+        FROM work_tag
+        WHERE work_nanoid IN
+        <foreach collection="workNanoids" item="workNanoid" open="(" separator="," close=")">
+            #{workNanoid}
+        </foreach>
+    </select>
+
+</mapper>

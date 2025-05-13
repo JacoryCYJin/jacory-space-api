@@ -37,10 +37,13 @@ public class ArticleController {
     @GetMapping("/list")
     public Result<List<ArticleVO>> list() {
         List<ArticleDTO> articleDTOList = articleService.list();
+        if (articleDTOList == null) {
+            return Result.fail("文章不存在");
+        }
         List<ArticleVO> articleVOList = articleConverter.converterArticleDTOListToArticleVOList(articleDTOList);
         return Result.success(articleVOList);
     }
-    
+
     /**
      * 根据nanoid查询文章
      * @param nanoid 文章nanoid

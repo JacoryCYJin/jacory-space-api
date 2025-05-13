@@ -7,7 +7,7 @@ import org.example.jacoryspaceapi.domain.po.ArticlePO;
 import org.example.jacoryspaceapi.domain.vo.ArticleVO;
 import org.example.jacoryspaceapi.domain.vo.CategoryVO;
 import org.example.jacoryspaceapi.domain.vo.TagVO;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
